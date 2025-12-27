@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <limits>
 
 using namespace std;
 
@@ -257,7 +258,7 @@ public:
         Role opponent = (role == Role::USER) ? Role::BOT : Role::USER;
 
         for (auto &dir : directions) {
-            // find the start point of the line (extend 4格 in the negative direction)
+            // find the start point of the line (extend 4 blocks in the negative direction)
             int startX = p.getX() - dir[0] * 4;
             int startY = p.getY() - dir[1] * 4;
             
@@ -584,6 +585,11 @@ public:
                 break;
             }
         }
+
+        cout << "Thanks for playing!" << endl;
+        cout << "Press any key to continue..." << endl;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin.get();
     }
 };
 

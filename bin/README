@@ -1,0 +1,49 @@
+
+---
+
+# Gomoku - Five in a Row
+
+A simple and graceful Gomoku game with both GUI and console versions.
+
+## 📦 Contents
+
+- **gomoku_ui.exe** - GUI Version (Recommended)
+- **gomoku_console.exe** - Console Version
+
+## 🎮 How to Play
+
+### GUI Version
+1. Run `gomoku_ui.exe`
+2. Click on the board to place black pieces
+3. AI will automatically place white pieces
+4. First to connect 5 pieces wins
+5. Click "Restart" button to play again
+
+### Console Version
+1. Run `gomoku_console.exe`
+2. Enter coordinates to place pieces (e.g., A1, B5)
+3. AI will respond with its move
+4. First to connect 5 pieces wins
+5. Type "quit" to exit
+
+## 🎯 Game Rules
+
+- Board: 15×15 grid
+- You play black, AI plays white
+- First to make 5 in a row (horizontal, vertical, or diagonal) wins
+- Draw is possible
+
+## 🤖 AI Features
+
+- Uses Minimax algorithm with Alpha-Beta pruning
+- Intelligent board evaluation
+- Both offensive and defensive strategies
+
+## 📋 System Requirements
+
+- Windows Operating System
+- No additional dependencies required
+
+---
+
+Created by Tianjian Chen (Acton Chen)

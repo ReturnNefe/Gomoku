@@ -186,12 +186,12 @@ private:
         // Text with breathing effect
         float breathe = 0.7f + 0.3f * std::sin(aiThinkingTime * 2.0f);
         Color textCol = {80, 75, 70, (unsigned char)(255 * aiThinkingAlpha * breathe)};
-        drawText("AI Thinking", cardX + 56.0f, cardY + 25.0f, 20, textCol);
+        drawText("AI Thinking", cardX + 62.0f, cardY + 25.0f, 20, textCol);
         
         // Animated dots
         int dotCount = ((int)(aiThinkingTime * 2.0f) % 3) + 1;
         std::string dots(dotCount, '.');
-        drawText(dots.c_str(), cardX + 155.0f, cardY + 18.0f, 20, textCol);
+        drawText(dots.c_str(), cardX + 168.0f, cardY + 20.0f, 20, textCol);
     }
     
     void drawGameOverOverlay() {

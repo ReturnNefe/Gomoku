@@ -194,38 +194,34 @@ private:
         drawText(dots.c_str(), cardX + 168.0f, cardY + 20.0f, 20, textCol);
     }
     
-    void drawGameOverOverlay() {
+    void drawGameOverBanner() {
         if (!gameOver) return;
         
-        // Update animation
+        // Update animation: slide from top (slide down effect)
         gameOverTime += GetFrameTime();
-        gameOverAlpha = std::min(1.0f, gameOverTime * 2.0f); // Fade in over 0.5s
+        float slideProgress = std::min(1.0f, gameOverTime * 2.5f); // Slide in over 0.4s
+        gameOverAlpha = slideProgress;
         
-        // Semi-transparent overlay
-        Color overlayBg = {0, 0, 0, (unsigned char)(80 * gameOverAlpha)};
-        DrawRectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, overlayBg);
+        // Banner dimensions
+        const float bannerHeight = 70.0f;
+        const float slideOffset = bannerHeight * (1.0f - slideProgress); // Negative offset = above screen
+        const float bannerY = slideOffset;
         
-        // Central message card
-        float cardWidth = 350.0f;
-        float cardHeight = 180.0f;
-        float cardX = (BOARD_PX - cardWidth) / 2.0f;
-        float cardY = (WINDOW_HEIGHT - cardHeight) / 2.0f;
+        // Banner background with subtle shadow
+        Rectangle shadowRect = {0.0f, bannerY + 2.0f, (float)WINDOW_WIDTH, bannerHeight};
+        Color shadowCol = {0, 0, 0, (unsigned char)(30 * gameOverAlpha)};
+        DrawRectangle((int)shadowRect.x, (int)shadowRect.y, (int)shadowRect.width, (int)shadowRect.height, shadowCol);
         
-        // Card shadow
-        Rectangle shadowRect = {cardX + 4, cardY + 4, cardWidth, cardHeight};
-        Color shadowCol = {0, 0, 0, (unsigned char)(60 * gameOverAlpha)};
-        DrawRectangleRounded(shadowRect, 0.15f, 16, shadowCol);
+        // Banner background
+        Rectangle bannerRect = {0.0f, bannerY, (float)WINDOW_WIDTH, bannerHeight};
+        Color bannerBg = {245, 243, 238, (unsigned char)(255 * gameOverAlpha)};
+        DrawRectangle((int)bannerRect.x, (int)bannerRect.y, (int)bannerRect.width, (int)bannerRect.height, bannerBg);
         
-        // Card background with border
-        Rectangle cardRect = {cardX, cardY, cardWidth, cardHeight};
+        // Bottom border for visual separation
         Color borderCol = {180, 170, 155, (unsigned char)(200 * gameOverAlpha)};
-        DrawRectangleRounded(cardRect, 0.15f, 16, borderCol);
+        DrawLineEx({0.0f, bannerY + bannerHeight}, {(float)WINDOW_WIDTH, bannerY + bannerHeight}, 2.0f, borderCol);
         
-        Rectangle innerRect = {cardX + 2, cardY + 2, cardWidth - 4, cardHeight - 4};
-        Color cardBg = {245, 243, 238, (unsigned char)(250 * gameOverAlpha)};
-        DrawRectangleRounded(innerRect, 0.15f, 16, cardBg);
-        
-        // Message text with different colors
+        // Message text with color coding
         Color msgColor;
         if (message == "VICTORY!") {
             msgColor = {90, 150, 90, (unsigned char)(255 * gameOverAlpha)}; // Soft green
@@ -235,19 +231,20 @@ private:
             msgColor = {120, 120, 120, (unsigned char)(255 * gameOverAlpha)}; // Gray
         }
         
-        // Center the text
-        Vector2 textSize = MeasureTextEx(font, message.c_str(), 48, 1.0f);
-        float textX = cardX + (cardWidth - textSize.x) / 2.0f;
-        float textY = cardY + 50.0f;
-        drawText(message.c_str(), textX, textY, 48, msgColor);
+        // Layout: [message] ... [subtitle]
+        Vector2 msgSize = MeasureTextEx(font, message.c_str(), 32, 1.0f);
+        float msgX = 20.0f;
+        float msgY = bannerY + (bannerHeight - msgSize.y) / 2.0f;
+        drawText(message.c_str(), msgX, msgY, 32, msgColor);
         
-        // Subtitle with pulsing effect
-        float pulse = 0.8f + 0.2f * std::sin(GetTime() * 2.0f);
-        Color subtitleCol = {100, 95, 90, (unsigned char)(200 * gameOverAlpha * pulse)};
-        const char* subtitle = "Click RESTART to play again";
-        Vector2 subSize = MeasureTextEx(font, subtitle, 16, 1.0f);
-        float subX = cardX + (cardWidth - subSize.x) / 2.0f;
-        drawText(subtitle, subX, textY + 70, 16, subtitleCol);
+        // Subtitle on the right with pulsing effect
+        float pulse = 0.7f + 0.3f * std::sin(GetTime() * 2.0f);
+        Color subtitleCol = {100, 95, 90, (unsigned char)(180 * gameOverAlpha * pulse)};
+        const char* subtitle = "Click Restart to play again";
+        Vector2 subSize = MeasureTextEx(font, subtitle, 14, 1.0f);
+        float subX = WINDOW_WIDTH - subSize.x - 20.0f;
+        float subY = bannerY + (bannerHeight - subSize.y) / 2.0f;
+        drawText(subtitle, subX, subY, 14, subtitleCol);
     }
     
     void drawPanel() {
@@ -269,11 +266,11 @@ private:
             // Show white piece + AI text
             DrawCircle((int)(panelX + 12), (int)(indicatorY + 40), 12.0f, WHITE_PIECE);
             DrawCircleLines((int)(panelX + 12), (int)(indicatorY + 40), 12.0f, GRID_COLOR);
-            drawText("Bot", panelX + 32, indicatorY + 30, 18, TEXT_COLOR);
+            drawText("AI", panelX + 32, indicatorY + 30, 18, TEXT_COLOR);
         } else {
-            // Show black piece + Your Turn
+            // Show black piece + You text
             DrawCircle((int)(panelX + 12), (int)(indicatorY + 40), 12.0f, BLACK_PIECE);
-            drawText("Your Turn", panelX + 32, indicatorY + 30, 18, TEXT_COLOR);
+            drawText("You", panelX + 32, indicatorY + 30, 18, TEXT_COLOR);
         }
 
         // Restart button
@@ -400,7 +397,7 @@ public:
             drawBoard();
             drawAiThinkingIndicator();  // Draw AI indicator over board
             drawPanel();
-            drawGameOverOverlay();  // Draw overlay last for proper layering
+            drawGameOverBanner();  // Draw banner last for proper layering
             EndDrawing();
         }
 

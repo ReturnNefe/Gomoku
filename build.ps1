@@ -17,7 +17,8 @@ if (!(Test-Path $OutDir)) {
 
 function Build-Console {
     Write-Host "Building Console version..." -ForegroundColor Cyan
-    g++ -std=c++17 -O2 "$SrcDir\console.cpp" -o "$OutDir\gomoku_console.exe"
+    g++ -std=c++17 -O2 "$SrcDir\console.cpp" -o "$OutDir\gomoku_console.exe" `
+        -static -static-libgcc -static-libstdc++
     if ($LASTEXITCODE -eq 0) {
         Write-Host "Console build success: bin\gomoku_console.exe" -ForegroundColor Green
     }
@@ -30,7 +31,8 @@ function Build-Raylib {
         -L "$RaylibDir\lib" `
         "$SrcDir\game.cpp" `
         -o "$OutDir\gomoku_ui.exe" `
-        -lraylib -lopengl32 -lgdi32 -lwinmm
+        -lraylib -lopengl32 -lgdi32 -lwinmm `
+        -static -static-libgcc -static-libstdc++
     if ($LASTEXITCODE -eq 0) {
         Write-Host "Raylib build success: bin\gomoku_ui.exe" -ForegroundColor Green
     }

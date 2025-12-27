@@ -2,8 +2,8 @@
 #define GOMOKU_TYPES_H
 
 const int BOARD_SIZE = 15;
-const int SEARCH_DEPTH = 4;
-const int SEARCH_RANGE = 3;
+const int SEARCH_DEPTH = 5;
+const int SEARCH_RANGE = 2;
 // K-Value = Defense / Attack
 const double DEFENSE_WEIGHT = 1.2; 
 

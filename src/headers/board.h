@@ -272,15 +272,21 @@ public:
     // optimize: sort candidates by heuristic score
     std::vector<Point> getSortedCandidates(Role role) {
         auto candidates = getCandidates();
-        
+        Role opponent = (role == Role::USER) ? Role::BOT : Role::USER;
+
         // Calculate the score for each candidate point
         std::vector<std::pair<int, Point>> scoredMoves;
         for (auto &p : candidates) {
             // Evaluate the point
             board[p.getX()][p.getY()] = role;
-            int score = evaluatePoint(p, role);
+            int attackScore = evaluatePoint(p, role);
             board[p.getX()][p.getY()] = Role::EMPTY;
-            scoredMoves.push_back({score, p});
+
+            board[p.getX()][p.getY()] = opponent;
+            int defenseScore = evaluatePoint(p, opponent);
+            board[p.getX()][p.getY()] = Role::EMPTY;
+
+            scoredMoves.push_back({attackScore + defenseScore, p});
         }
         
         // Sort the moves by score in descending order

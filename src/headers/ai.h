@@ -52,7 +52,7 @@ public:
     Point getBestMove(Board &board) {
         auto candidates = board.getSortedCandidates(Role::BOT);
         Point bestMove;
-        int bestScore = PredefinedScore::LOSE;
+        int bestScore = -INT_MAX;
         
         for (auto &p : candidates) {
             if (board.makeMove(p, Role::BOT)) {

@@ -4,6 +4,8 @@
 
 ![游戏界面](screenshots/ui.jpg)
 
+![游戏界面](screenshots/console.jpg)
+
 ## 构建 & 运行
 
 ### 前置要求

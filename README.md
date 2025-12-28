@@ -2,7 +2,9 @@
 
 A C++ implementation of the classic Gomoku (Five-in-a-Row) game, featuring both console and graphical interfaces.
 
-![Game Interface](screenshots/ui.jpg)
+![Raylib Edition](screenshots/ui.jpg)
+
+![Console Edition](screenshots/console.jpg)
 
 ## Build & Run
 

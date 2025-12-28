@@ -2,6 +2,7 @@
 #define GOMOKU_AI_H
 
 #include "board.h"
+#include <limits>
 
 class AI {
 private:
@@ -52,7 +53,7 @@ public:
     Point getBestMove(Board &board) {
         auto candidates = board.getSortedCandidates(Role::BOT);
         Point bestMove;
-        int bestScore = -INT_MAX;
+        int bestScore = std::numeric_limits<int>::min();
         
         for (auto &p : candidates) {
             if (board.makeMove(p, Role::BOT)) {
@@ -61,8 +62,8 @@ public:
                     Role::USER,
                     SEARCH_DEPTH - 1,
                     p,
-                    PredefinedScore::LOSE,
-                    PredefinedScore::WIN
+                    std::numeric_limits<int>::min(),
+                    std::numeric_limits<int>::max()
                 );
                 
                 board.undoMove(p);

@@ -4,7 +4,7 @@
 #include "types.h"
 #include <vector>
 #include <algorithm>
-#include <climits>
+#include <limits>
 
 // Forward declaration
 class Board;
@@ -42,7 +42,7 @@ public:
         }
     };
 
-    LineView(const Board& b, Point start, Direction dir, int length = INT_MAX)
+    LineView(const Board& b, Point start, Direction dir, int length = std::numeric_limits<int>::max())
         : board(b), start(start), dir(dir), length(length) { }
 
     Iterator begin() const { return Iterator(board, start, dir, length); }
